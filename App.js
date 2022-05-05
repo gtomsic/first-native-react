@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { StyleSheet, View, Button, FlatList } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import GoalInput from './src/components/GoalInput';
 import GoalItem from './src/components/GoalItem';
 export default function App() {
@@ -22,37 +23,40 @@ export default function App() {
     });
   };
   return (
-    <View style={styles.appContainer}>
-      <Button
-        title="Add New Goal"
-        color="#5e0acc"
-        onPress={() => setIsOpen(!isOpen)}
-      />
-
-      <GoalInput
-        goalInputHandler={goalInputHandler}
-        addGoalHandler={addGoalHandler}
-        isOpen={isOpen}
-        closeModal={() => setIsOpen(false)}
-      />
-
-      <View style={styles.goalsContainer}>
-        <FlatList
-          data={goals}
-          renderItem={(itemData) => {
-            return (
-              <GoalItem
-                text={itemData.item.text}
-                onPress={() => deleteCourseItem(itemData.item.key)}
-                isOpen={isOpen}
-              />
-            );
-          }}
-          keyExtractor={(item) => item.key}
-          alwaysBounceVertical={false}
+    <>
+      <StatusBar style="light" />
+      <View style={styles.appContainer}>
+        <Button
+          title="Add New Goal"
+          color="#a065ec"
+          onPress={() => setIsOpen(!isOpen)}
         />
+
+        <GoalInput
+          goalInputHandler={goalInputHandler}
+          addGoalHandler={addGoalHandler}
+          isOpen={isOpen}
+          closeModal={() => setIsOpen(false)}
+        />
+
+        <View style={styles.goalsContainer}>
+          <FlatList
+            data={goals}
+            renderItem={(itemData) => {
+              return (
+                <GoalItem
+                  text={itemData.item.text}
+                  onPress={() => deleteCourseItem(itemData.item.key)}
+                  isOpen={isOpen}
+                />
+              );
+            }}
+            keyExtractor={(item) => item.key}
+            alwaysBounceVertical={false}
+          />
+        </View>
       </View>
-    </View>
+    </>
   );
 }
 
