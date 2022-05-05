@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { StyleSheet, View, Button, TextInput, FlatList } from 'react-native';
+import { StyleSheet, View, Button, FlatList } from 'react-native';
 import GoalInput from './src/components/GoalInput';
 import GoalItem from './src/components/GoalItem';
 export default function App() {
   const [goals, setGoals] = useState([]);
   const [text, setText] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
   const goalInputHandler = (enteredText) => {
     setText(enteredText);
   };
@@ -13,6 +14,7 @@ export default function App() {
       { text: text, key: Math.random().toString() },
       ...previosGoals,
     ]);
+    setIsOpen(false);
   };
   const deleteCourseItem = (id) => {
     setGoals((currentGoals) => {
@@ -21,10 +23,19 @@ export default function App() {
   };
   return (
     <View style={styles.appContainer}>
+      <Button
+        title="Add New Goal"
+        color="#5e0acc"
+        onPress={() => setIsOpen(!isOpen)}
+      />
+
       <GoalInput
         goalInputHandler={goalInputHandler}
         addGoalHandler={addGoalHandler}
+        isOpen={isOpen}
+        closeModal={() => setIsOpen(false)}
       />
+
       <View style={styles.goalsContainer}>
         <FlatList
           data={goals}
@@ -33,6 +44,7 @@ export default function App() {
               <GoalItem
                 text={itemData.item.text}
                 onPress={() => deleteCourseItem(itemData.item.key)}
+                isOpen={isOpen}
               />
             );
           }}
