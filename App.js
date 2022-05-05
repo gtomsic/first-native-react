@@ -14,6 +14,11 @@ export default function App() {
       ...previosGoals,
     ]);
   };
+  const deleteCourseItem = (id) => {
+    setGoals((currentGoals) => {
+      return currentGoals.filter((item) => item.key !== id);
+    });
+  };
   return (
     <View style={styles.appContainer}>
       <GoalInput
@@ -24,7 +29,12 @@ export default function App() {
         <FlatList
           data={goals}
           renderItem={(itemData) => {
-            return <GoalItem text={itemData.item.text} />;
+            return (
+              <GoalItem
+                text={itemData.item.text}
+                onPress={() => deleteCourseItem(itemData.item.key)}
+              />
+            );
           }}
           keyExtractor={(item) => item.key}
           alwaysBounceVertical={false}
